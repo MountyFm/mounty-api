@@ -3,7 +3,8 @@ package routes.ping
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.server.Directives._
 import akka.util.Timeout
-import kz.mounty.fm.amqp.messages.PingMessage
+import kz.mounty.fm.amqp.messages.MountyMessages.UserProfileCore
+import kz.mounty.fm.amqp.messages.{MountyMessages, PingMessage}
 import org.json4s.jackson.Serialization._
 import routes.RouteCompletion
 
@@ -16,7 +17,7 @@ class PingRoutes(publisher: ActorRef)(implicit ex: ExecutionContext,
   def route = pathPrefix("ping") {
     post {
       entity(as[PingMessage]) { body => ctx =>
-        completeRequest(publisher, write(body), "mounty-api.in.ping", ctx)
+        completeRequest(publisher, write(body), UserProfileCore.Ping.routingKey, ctx)
       }
     }
   }

@@ -11,10 +11,10 @@ import scala.util.{Failure, Success}
 
 
 object AmqpPublisherActor {
-  def props(channel: Channel, exchange: String, routingKey: String): Props =
-    Props(new AmqpPublisherActor(channel, exchange, routingKey))
+  def props(channel: Channel, exchange: String): Props =
+    Props(new AmqpPublisherActor(channel, exchange))
 }
-class AmqpPublisherActor(channel: Channel, exchange: String, routingKey: String)
+class AmqpPublisherActor(channel: Channel, exchange: String)
   extends Actor
    with ActorLogging
    with Serializers{

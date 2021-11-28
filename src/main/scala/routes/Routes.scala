@@ -7,11 +7,13 @@ import routes.profile.UserProfileRoutes
 
 import scala.concurrent.{ExecutionContext, Future}
 
-class Routes(publisher: ActorRef)(implicit ex: ExecutionContext,
+class Routes(implicit ex: ExecutionContext,
+             publisher: ActorRef,
                system: ActorSystem,
-               timeout: Timeout) {
+               timeout: Timeout)
+  extends UserProfileRoutes {
 
-  val userProfileRoutes = new UserProfileRoutes(publisher).route
+
   def routes =
     pathPrefix("api") {
       pathPrefix("hello") {

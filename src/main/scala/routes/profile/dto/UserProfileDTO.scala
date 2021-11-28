@@ -1,5 +1,6 @@
 package routes.profile.dto
 
+import kz.mounty.fm.domain.requests.CreateUserProfileRequestBody
 import kz.mounty.fm.domain.user.UserProfile
 import org.joda.time.DateTime
 
@@ -10,6 +11,12 @@ case class UserProfileDTO(name: String,
                           avatarUrl: Option[String] = None,
                           spotifyUri: String)
 
+case class CreateUserProfileDTO(tokenKey: String)
+
+object CreateUserProfileDTO {
+  def convert(request: CreateUserProfileDTO) =
+    CreateUserProfileRequestBody(request.tokenKey)
+}
 object UserProfileDTO {
   def convert(userProfileDTO: UserProfileDTO): UserProfile = {
     UserProfile(

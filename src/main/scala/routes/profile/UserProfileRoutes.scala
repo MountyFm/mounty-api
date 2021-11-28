@@ -8,15 +8,16 @@ import kz.mounty.fm.amqp.messages.PingMessage
 import kz.mounty.fm.domain.requests.{CreateUserProfileRequestBody, DeleteUserProfileRequestBody, GetUserProfileByIdRequestBody, UpdateUserProfileRequestBody}
 import org.json4s.jackson.Serialization._
 import routes.RouteCompletion
-import routes.profile.dto.UserProfileDTO
+import routes.profile.dto.{CreateUserProfileDTO, UserProfileDTO}
 
 import scala.concurrent.ExecutionContext
 
-class UserProfileRoutes(publisher: ActorRef)(implicit ex: ExecutionContext,
-                                      system: ActorSystem,
-                                      timeout: Timeout) extends RouteCompletion {
+trait UserProfileRoutes extends RouteCompletion {
   val exchange = "X:mounty-api-in"
-  def route = pathPrefix("ping") {
+  def userProfileRoutes(implicit ex: ExecutionContext,
+            publisher: ActorRef,
+            system: ActorSystem,
+            timeout: Timeout) = pathPrefix("ping") {
     post {
       entity(as[PingMessage]) { body => ctx =>
         completeRequest(publisher, write(body), UserProfileCore.Ping.routingKey, exchange,  ctx)
@@ -24,8 +25,8 @@ class UserProfileRoutes(publisher: ActorRef)(implicit ex: ExecutionContext,
     }
   } ~ pathPrefix("new") {
     post {
-      entity(as[UserProfileDTO]) { body => ctx =>
-        val createRequest = CreateUserProfileRequestBody(UserProfileDTO.convert(body))
+      entity(as[CreateUserProfileDTO]) { body => ctx =>
+        val createRequest = CreateUserProfileDTO.convert(body)
         completeRequest(publisher, write(createRequest), UserProfileCore.CreateUserProfileRequest.routingKey, exchange, ctx)
       }
     }

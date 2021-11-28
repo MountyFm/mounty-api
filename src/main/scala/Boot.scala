@@ -39,7 +39,8 @@ object Boot extends App {
   RabbitMQConnection.declareExchange(
     channel,
     "X:mounty-api-out",
-    "topic") match {
+    "topic"
+  ) match {
     case Success(value) => system.log.info("succesfully declared exchange")
     case Failure(exception) => system.log.warning(s"couldn't declare exchange ${exception.getMessage}")
   }
@@ -51,13 +52,13 @@ object Boot extends App {
     "mounty-messages.mounty-api.#"
   )
 
-  val publisher: ActorRef = system.actorOf(
+  implicit val publisher: ActorRef = system.actorOf(
     AmqpPublisherActor.props(channel))
 
   val listener: ActorRef = system.actorOf(AmqpListenerActor.props())
   channel.basicConsume("Q:mounty-api-queue", AmqpConsumer(listener))
 
-  val routes = new Routes(publisher)
+  val routes = new Routes()
 
   Http()
     .newServerAt("localhost", 8080)

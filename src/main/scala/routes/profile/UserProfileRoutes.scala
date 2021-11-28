@@ -15,35 +15,35 @@ import scala.concurrent.ExecutionContext
 class UserProfileRoutes(publisher: ActorRef)(implicit ex: ExecutionContext,
                                       system: ActorSystem,
                                       timeout: Timeout) extends RouteCompletion {
-
+  val exchange = "X:mounty-api-in"
   def route = pathPrefix("ping") {
     post {
       entity(as[PingMessage]) { body => ctx =>
-        completeRequest(publisher, write(body), UserProfileCore.Ping.routingKey, ctx)
+        completeRequest(publisher, write(body), UserProfileCore.Ping.routingKey, exchange,  ctx)
       }
     }
   } ~ pathPrefix("new") {
     post {
       entity(as[UserProfileDTO]) { body => ctx =>
         val createRequest = CreateUserProfileRequestBody(UserProfileDTO.convert(body))
-        completeRequest(publisher, write(createRequest), UserProfileCore.CreateUserProfileRequest.routingKey, ctx)
+        completeRequest(publisher, write(createRequest), UserProfileCore.CreateUserProfileRequest.routingKey, exchange, ctx)
       }
     }
   } ~ pathPrefix("update") {
     put {
       entity(as[UpdateUserProfileRequestBody]) { body => ctx =>
-        completeRequest(publisher, write(body), UserProfileCore.UpdateUserProfileRequest.routingKey, ctx)
+        completeRequest(publisher, write(body), UserProfileCore.UpdateUserProfileRequest.routingKey, exchange, ctx)
       }
     }
   } ~ pathPrefix("delete"/ Segment) { id =>
     delete { ctx =>
       val body = DeleteUserProfileRequestBody(id)
-      completeRequest(publisher, write(body), UserProfileCore.DeleteUserProfileRequest.routingKey, ctx)
+      completeRequest(publisher, write(body), UserProfileCore.DeleteUserProfileRequest.routingKey, exchange, ctx)
     }
   } ~ pathPrefix("id"/ Segment) {id =>
     get { ctx =>
       val body = GetUserProfileByIdRequestBody(id)
-      completeRequest(publisher, write(body), UserProfileCore.GetUserProfileByIdRequest.routingKey, ctx)
+      completeRequest(publisher, write(body), UserProfileCore.GetUserProfileByIdRequest.routingKey, exchange, ctx)
     }
   }
 }

@@ -4,16 +4,15 @@ import akka.actor.{Actor, ActorLogging, ActorRef}
 import akka.http.scaladsl.marshalling.ToResponseMarshallable
 import akka.http.scaladsl.server.{RequestContext, RouteResult}
 import kz.mounty.fm.amqp.messages.AMQPMessage
-import kz.mounty.fm.domain.DomainEntity
 import kz.mounty.fm.serializers.Serializers
-import org.json4s.Formats
-import org.json4s.jackson.Serialization
+
 
 import scala.concurrent.Promise
 import scala.concurrent.{ExecutionContext, Promise}
 
 object PerRequest {
   class PerRequestActor(val routingKey: String,
+                        val exchange: String,
                         val entity: String,
                         val promise: Promise[RouteResult],
                         val requestContext: RequestContext,
@@ -21,7 +20,11 @@ object PerRequest {
     extends PerRequest {
     val actorPath: String = self.path.toStringWithoutAddress
     val message: AMQPMessage =
-      AMQPMessage(entity, routingKey, actorPath)
+      AMQPMessage(
+        entity = entity,
+        exchange = exchange,
+        routingKey = routingKey,
+        actorPath = actorPath)
     publisherActor ! message
   }
 

@@ -18,6 +18,7 @@ trait RouteCompletion extends Serializers with Json4sSupport{
   def completeRequest(publisher: ActorRef,
                       body: String,
                       routingKey: String,
+                      exchange: String,
                       ctx: RequestContext)
                      (implicit system: ActorSystem): Future[RouteResult] = {
     val promise = Promise[RouteResult]
@@ -25,6 +26,7 @@ trait RouteCompletion extends Serializers with Json4sSupport{
       Props(
         new PerRequestActor(
           routingKey,
+          exchange,
           body,
           promise,
           ctx,

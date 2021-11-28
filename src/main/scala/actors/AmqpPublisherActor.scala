@@ -11,10 +11,10 @@ import scala.util.{Failure, Success}
 
 
 object AmqpPublisherActor {
-  def props(channel: Channel, exchange: String): Props =
-    Props(new AmqpPublisherActor(channel, exchange))
+  def props(channel: Channel): Props =
+    Props(new AmqpPublisherActor(channel))
 }
-class AmqpPublisherActor(channel: Channel, exchange: String)
+class AmqpPublisherActor(channel: Channel)
   extends Actor
    with ActorLogging
    with Serializers{
@@ -24,8 +24,7 @@ class AmqpPublisherActor(channel: Channel, exchange: String)
 
       AmqpPublisher.publish(
         message,
-        channel,
-        exchange
+        channel
       ) match {
         case Success(value) => log.info(s"succefully send message $message")
         case Failure(exception) => log.warning(s"couldn't message ${exception.getMessage}")

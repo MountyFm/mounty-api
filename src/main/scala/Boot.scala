@@ -52,7 +52,7 @@ object Boot extends App {
   )
 
   val publisher: ActorRef = system.actorOf(
-    AmqpPublisherActor.props(channel, "X:mounty-api-in"))
+    AmqpPublisherActor.props(channel))
 
   val listener: ActorRef = system.actorOf(AmqpListenerActor.props())
   channel.basicConsume("Q:mounty-api-queue", AmqpConsumer(listener))

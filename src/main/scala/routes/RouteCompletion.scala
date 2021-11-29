@@ -15,10 +15,11 @@ import scala.concurrent.{Future, Promise}
 trait RouteCompletion extends Serializers with Json4sSupport{
   implicit val serialization: Serialization = Serialization
 
+  val exchange = "X:mounty-api-in"
+
   def completeRequest(publisher: ActorRef,
                       body: String,
                       routingKey: String,
-                      exchange: String,
                       ctx: RequestContext)
                      (implicit system: ActorSystem): Future[RouteResult] = {
     val promise = Promise[RouteResult]

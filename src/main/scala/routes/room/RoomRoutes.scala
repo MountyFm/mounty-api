@@ -11,8 +11,6 @@ import routes.RouteCompletion
 import scala.concurrent.ExecutionContext
 
 trait RoomRoutes extends RouteCompletion {
-  val exchange = "X:mounty-api-in"
-
   def roomRoutes(implicit ex: ExecutionContext,
                  publisher: ActorRef,
                  system: ActorSystem,
@@ -21,7 +19,7 @@ trait RoomRoutes extends RouteCompletion {
       parameters("size".as[Int]) { size =>
         ctx =>
           val bodyJson = write(GetRoomsForExploreRequestBody(size))
-          completeRequest(publisher, bodyJson, RoomCore.GetRoomsForExploreRequest.routingKey, exchange, ctx)
+          completeRequest(publisher, bodyJson, RoomCore.GetRoomsForExploreRequest.routingKey, ctx)
       }
     }
   } ~ pathPrefix("room-and-track") {
@@ -35,7 +33,7 @@ trait RoomRoutes extends RouteCompletion {
         ctx =>
           val bodyJson = write(GetRoomAndRoomTracksRequestBody(roomId, limit, offset, tokenKey))
 
-          completeRequest(publisher, bodyJson, RoomCore.GetRoomsAndRoomTracksRequest.routingKey, exchange, ctx)
+          completeRequest(publisher, bodyJson, RoomCore.GetRoomsAndRoomTracksRequest.routingKey, ctx)
 
       }
     }
@@ -48,7 +46,7 @@ trait RoomRoutes extends RouteCompletion {
       ) { (limit, offset, tokenKey) =>
         ctx =>
           val bodyJson = write(GetCurrentUserRoomsRequestBody(limit, offset, tokenKey))
-          completeRequest(publisher, bodyJson, RoomCore.GetCurrentUserRoomsRequest.routingKey, exchange, ctx)
+          completeRequest(publisher, bodyJson, RoomCore.GetCurrentUserRoomsRequest.routingKey, ctx)
       }
     }
   } ~ pathEndOrSingleSlash {
@@ -58,7 +56,7 @@ trait RoomRoutes extends RouteCompletion {
       ) { inviteCode =>
         ctx =>
           val bodyJson = write(GetRoomByInviteCodeRequestBody(inviteCode))
-          completeRequest(publisher, bodyJson, RoomCore.GetRoomByInviteCodeRequest.routingKey, exchange, ctx)
+          completeRequest(publisher, bodyJson, RoomCore.GetRoomByInviteCodeRequest.routingKey, ctx)
       }
     }
   }

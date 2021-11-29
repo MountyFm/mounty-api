@@ -17,7 +17,6 @@ class Routes(implicit ex: ExecutionContext,
   with PlayerRoutes
   with RoomRoutes {
 
-
   def routes =
     pathPrefix("api") {
       pathPrefix("hello") {

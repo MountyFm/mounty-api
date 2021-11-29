@@ -51,7 +51,7 @@ trait RoomRoutes extends RouteCompletion {
           completeRequest(publisher, bodyJson, RoomCore.GetCurrentUserRoomsRequest.routingKey, exchange, ctx)
       }
     }
-  } ~ pathPrefix("current-user-rooms") {
+  } ~ pathEndOrSingleSlash {
     get {
       parameters(
         "inviteCode".as[String]

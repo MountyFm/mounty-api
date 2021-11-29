@@ -26,7 +26,7 @@ class Routes(implicit ex: ExecutionContext,
         userProfileRoutes
       } ~ pathPrefix("player") {
         playerRoutes
-      } ~ pathPrefix("room") {
+      } ~ pathPrefix("rooms") {
         roomRoutes
       }
 

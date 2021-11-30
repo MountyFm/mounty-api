@@ -6,16 +6,18 @@ import akka.util.Timeout
 import routes.player.PlayerRoutes
 import routes.profile.UserProfileRoutes
 import routes.room.RoomRoutes
+import routes.roomuser.RoomUserRoutes
 
 import scala.concurrent.{ExecutionContext, Future}
 
 class Routes(implicit ex: ExecutionContext,
              publisher: ActorRef,
-               system: ActorSystem,
-               timeout: Timeout)
+             system: ActorSystem,
+             timeout: Timeout)
   extends UserProfileRoutes
-  with PlayerRoutes
-  with RoomRoutes {
+    with PlayerRoutes
+    with RoomRoutes
+    with RoomUserRoutes {
 
   def routes =
     pathPrefix("api") {
@@ -27,7 +29,8 @@ class Routes(implicit ex: ExecutionContext,
         playerRoutes
       } ~ pathPrefix("rooms") {
         roomRoutes
+      } ~ pathPrefix("room-users") {
+        roomUserRoutes
       }
-
-  }
+    }
 }

@@ -3,7 +3,7 @@ package routes.room
 import akka.actor.{ActorRef, ActorSystem}
 import akka.http.scaladsl.server.Directives._
 import akka.util.Timeout
-import kz.mounty.fm.amqp.messages.MountyMessages.{RoomCore, UserProfileCore}
+import kz.mounty.fm.amqp.messages.MountyMessages.RoomCore
 import kz.mounty.fm.domain.requests._
 import org.json4s.jackson.Serialization.write
 import routes.RouteCompletion
@@ -37,7 +37,7 @@ trait RoomRoutes extends RouteCompletion {
 
       }
     }
-  } ~ pathPrefix("current-user") {
+  } ~ pathPrefix("current-user-rooms") {
     get {
       parameters(
         "limit".as[Int].optional,

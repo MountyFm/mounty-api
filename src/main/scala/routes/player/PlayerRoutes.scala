@@ -26,24 +26,25 @@ trait PlayerRoutes extends RouteCompletion {
         ctx =>
           state match {
             case "next" =>
-              val body = write(NextSongCommandBody(deviceId, tokenKey, roomId))
-              completeRequest(publisher, write(body), RoomCore.PlayNextTrack.routingKey, ctx)
+              val bodyJson = write(NextSongCommandBody(deviceId, tokenKey, roomId))
+
+              completeRequest(publisher, bodyJson, RoomCore.PlayNextTrack.routingKey, ctx)
 
             case "stop" =>
-              val body = write(PauseSongCommandBody(deviceId, tokenKey, roomId))
-              completeRequest(publisher, write(body), RoomCore.PauseSong.routingKey, ctx)
+              val bodyJson = write(PauseSongCommandBody(deviceId, tokenKey, roomId))
+              completeRequest(publisher, bodyJson, RoomCore.PauseSong.routingKey, ctx)
 
             case "prev" =>
-              val body = write(PrevSongCommandBody(deviceId, tokenKey, roomId))
-              completeRequest(publisher, write(body), RoomCore.PlayPrevTrack.routingKey, ctx)
+              val bodyJson = write(PrevSongCommandBody(deviceId, tokenKey, roomId))
+              completeRequest(publisher, bodyJson, RoomCore.PlayPrevTrack.routingKey, ctx)
             case "play" =>
-              val body = write(PlaySongCommandBody(
+              val bodyJson = write(PlaySongCommandBody(
                 contextUri = contextUri,
                 offset = offset,
                 tokenKey = tokenKey,
                 roomId = roomId,
                 deviceId = deviceId))
-              completeRequest(publisher, body, RoomCore.PlaySong.routingKey, ctx)
+              completeRequest(publisher, bodyJson, RoomCore.PlaySong.routingKey, ctx)
           }
       }
     }

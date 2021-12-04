@@ -25,5 +25,5 @@ libraryDependencies ++= Seq(
   "org.json4s" %% "json4s-native" % "4.0.3",
   "com.rabbitmq" % "amqp-client" % "5.14.0",
   "de.heikoseeberger" %% "akka-http-json4s" % "1.38.2",
-
+  "ch.megard" %% "akka-http-cors" % "1.1.2"
 )

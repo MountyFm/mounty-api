@@ -7,7 +7,7 @@ import routes.player.PlayerRoutes
 import routes.profile.UserProfileRoutes
 import routes.room.RoomRoutes
 import routes.roomuser.RoomUserRoutes
-
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import scala.concurrent.{ExecutionContext, Future}
 
 class Routes(implicit ex: ExecutionContext,
@@ -19,7 +19,7 @@ class Routes(implicit ex: ExecutionContext,
     with RoomRoutes
     with RoomUserRoutes {
 
-  def routes =
+  def routes = cors() {
     pathPrefix("api") {
       pathPrefix("hello") {
         complete("world")
@@ -33,4 +33,5 @@ class Routes(implicit ex: ExecutionContext,
         roomUserRoutes
       }
     }
+  }
 }

@@ -8,6 +8,9 @@ import routes.profile.UserProfileRoutes
 import routes.room.RoomRoutes
 import routes.roomuser.RoomUserRoutes
 import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
+import ch.megard.akka.http.cors.scaladsl.model.{HttpHeaderRange, HttpOriginMatcher}
+import ch.megard.akka.http.cors.scaladsl.settings.CorsSettings
+
 import scala.concurrent.{ExecutionContext, Future}
 
 class Routes(implicit ex: ExecutionContext,
@@ -19,7 +22,11 @@ class Routes(implicit ex: ExecutionContext,
     with RoomRoutes
     with RoomUserRoutes {
 
-  def routes = cors() {
+  val settings = CorsSettings(system)
+    .withAllowedOrigins(HttpOriginMatcher.*)
+    .withAllowedHeaders(HttpHeaderRange.*)
+
+  def routes = cors(settings) {
     pathPrefix("api") {
       pathPrefix("hello") {
         complete("world")

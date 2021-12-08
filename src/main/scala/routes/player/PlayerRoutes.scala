@@ -15,7 +15,7 @@ trait PlayerRoutes extends RouteCompletion {
                    publisher: ActorRef,
                    system: ActorSystem,
                    timeout: Timeout) = pathPrefix("playerState") {
-    put {
+    get {
       parameters(
         "state".as[String],
         "tokenKey".as[String],
@@ -27,7 +27,7 @@ trait PlayerRoutes extends RouteCompletion {
           state match {
             case "next" =>
               val bodyJson = write(NextSongCommandBody(deviceId, tokenKey, roomId))
-
+              println(bodyJson)
               completeRequest(publisher, bodyJson, RoomCore.PlayNextTrack.routingKey, ctx)
 
             case "stop" =>

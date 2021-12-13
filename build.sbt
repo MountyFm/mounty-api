@@ -13,7 +13,7 @@ resolvers += Resolver.bintrayRepo("akka", "snapshots")
 
 libraryDependencies ++= Seq(
   "joda-time"  % "joda-time"  % "2.10.13",
-  "kz.mounty" %% "mounty-domain" % "0.1.1-SNAPSHOT",
+  "kz.mounty" %% "mounty-domain" % "0.1.2-SNAPSHOT",
   "org.mongodb.scala" %% "mongo-scala-driver" % "4.4.0",
   "org.slf4j" % "slf4j-api" % "1.7.32",
   "org.slf4j" % "slf4j-simple" % "1.7.32",

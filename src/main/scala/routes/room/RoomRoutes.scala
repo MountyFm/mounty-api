@@ -56,6 +56,13 @@ trait RoomRoutes extends RouteCompletion {
           completeRequest(publisher, write(entity), RoomCore.UpdateRoomRequest.routingKey, ctx)
       }
     }
+  } ~ pathPrefix("private") {
+    put {
+      entity(as[MakeRoomPrivateRequestBody]) { entity =>
+         ctx =>
+          completeRequest(publisher, write(entity), RoomCore.MakeRoomPrivateRequest.routingKey, ctx)
+      }
+    }
   } ~ pathEndOrSingleSlash {
     get {
       parameters(
